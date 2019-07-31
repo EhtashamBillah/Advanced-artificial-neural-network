@@ -93,7 +93,7 @@ def create_classifier(optimizer,kernel_initializer,activation,dropout_rate,weigh
                          activation= activation,                            # gridsearching
                          kernel_constraint = maxnorm(weight_constraint)     # gridsearching
                          ))
-    ann_classifier.add(Dropout(dropout_rate))                               # droping out units from 1st hidden layer
+    ann_classifier.add(Dropout(dropout_rate))                               # droping out units from 2nd hidden layer
     ann_classifier.add(Dense(units = 1,                                     # no of units in output layer for 2-class classification (p=yes/poitive/1)
                          kernel_initializer= kernel_initializer,            # gridsearching
                          activation= "sigmoid"
