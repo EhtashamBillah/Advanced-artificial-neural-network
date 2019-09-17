@@ -37,13 +37,9 @@ df.skew()
 cat_features = ["Geography","Gender"]
 df_final = pd.get_dummies(data = df,columns = cat_features,drop_first = True)
 
-
-# Scalling
 x = df_final.iloc[:,3:].drop("Exited",axis = 1)
 y = df_final["Exited"]
-scaler = StandardScaler()
-scaled_x = scaler.fit_transform(x)
-scaled_x = pd.DataFrame(data = scaled_x,columns=x.columns)
+
 
 # Splitting the data
 test_size = 0.20
@@ -51,6 +47,15 @@ seed = 2019
 x_train,x_test,y_train,y_test = train_test_split(scaled_x, y, 
                                                  test_size = test_size,
                                                  random_state = seed)
+
+
+# scalling
+scaler = StandardScaler()
+scaled_x_train = scaler.fit_transform(x_train)
+scaled_x_test = scaler.transform(x_test)
+
+scaled_x_train = pd.DataFrame(data = scaled_x_train,columns=x_train.columns)
+scaled_x_test = pd.DataFrame(data = scaled_x_test,columns=x_test.columns)
 
 # k-fold cross validation with gridsearch
 # 1. Parameter grid 
@@ -117,7 +122,7 @@ grid = GridSearchCV(estimator = ann_classifier,
                     verbose = 1)
 
 # Fitting the model
-grid_results = grid.fit(x_train,y_train)
+grid_results = grid.fit(scaled_x_train,scaled_y_train)
 
 
 best_accuracy = grid.best_score_
